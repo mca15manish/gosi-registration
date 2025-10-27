@@ -17,13 +17,15 @@ app.get('/', (req, res) => {
 // Route: Handle form submission
 app.post('/register', async (req, res) => {
   const { firstName, lastName } = req.body;
-  const userData = `First Name: ${firstName}, Last Name: ${lastName}`;
+
+  // ✅ Compact, easy-to-parse QR format
+  const userData = `FN:${firstName}|LN:${lastName}`;
 
   try {
     const qrCodeData = await QRCode.toDataURL(userData);
     res.render('result', { firstName, lastName, qrCodeData });
   } catch (err) {
-    console.error(err);
+    console.error('Error generating QR:', err);
     res.status(500).send('Error generating QR code');
   }
 });
